@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUINDAV - À propos | Matériaux de construction Lubumbashi</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <a href="https://wa.me/243974663487" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>QUINDAV</h1>
+                <p>Votre partenaire de confiance à Lubumbashi</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="produits.html">Produits</a></li>
+                    <li><a href="reservation.html">Réservation</a></li>
+                    <li><a href="a-propos.html" class="active">À propos</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <section class="page-header">
+        <div class="container">
+            <h1>À propos de QUINDAV</h1>
+            <p>Votre partenaire de confiance pour la construction et l'électricité à Lubumbashi</p>
+        </div>
+    </section>
+
+    <section class="about-content">
+        <div class="container">
+            <div class="about-text">
+                <h2>Notre histoire</h2>
+                <p>QUINDAV est une entreprise basée à Lubumbashi, spécialisée dans la vente de matériaux de construction et d'équipements électriques. Nous sommes idéalement situés <strong>à côté de KKS Express sur l'Avenue Moero</strong>.</p>
+                
+                <h2>Notre mission</h2>
+                <p>Fournir aux professionnels et particuliers de Lubumbashi des matériaux fiables et durables pour tous leurs projets de construction et d'installation électrique.</p>
+                
+                <h2>Nos valeurs</h2>
+                <ul>
+                    <li><strong>Qualité</strong> : Nous sélectionnons rigoureusement nos produits.</li>
+                    <li><strong>Confiance</strong> : La satisfaction de nos clients est notre priorité.</li>
+                    <li><strong>Service</strong> : Une équipe dédiée à votre écoute.</li>
+                    <li><strong>Proximité</strong> : Implantés à Lubumbashi, nous connaissons vos besoins.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+    <script>
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            });
+    </script>
+
+    <script src="script.js"></script>
+</body>
+</html>

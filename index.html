@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUINDAV - Matériaux de construction & Équipements électriques - Lubumbashi</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <a href="https://wa.me/243974663487" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>QUINDAV</h1>
+                <p>Votre partenaire de confiance à Lubumbashi</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="active">Accueil</a></li>
+                    <li><a href="produits.html">Produits</a></li>
+                    <li><a href="reservation.html">Réservation</a></li>
+                    <li><a href="a-propos.html">À propos</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2>Qualité, fiabilité et service à Lubumbashi</h2>
+                <p>Découvrez notre large gamme de matériaux de construction et équipements électriques pour tous vos projets.</p>
+                <div class="hero-buttons">
+                    <a href="produits.html" class="btn btn-primary">Nos produits</a>
+                    <a href="reservation.html" class="btn btn-secondary">Réserver maintenant</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="products-highlight">
+        <div class="container">
+            <h2>Nos produits phares</h2>
+            <div class="products-grid">
+                <a href="produits.html?categorie=vitres" style="text-decoration: none; color: inherit;">
+                    <div class="product-card">
+                        <img src="images/vitre_fenetre.jpg" alt="Vitre" style="width: 100%; height: 180px; object-fit: cover; border-radius: 10px; margin-bottom: 15px;">
+                        <h3>Vitres & Carreaux</h3>
+                        <p>Verres trempés, miroirs, carreaux de céramique.</p>
+                    </div>
+                </a>
+                <a href="produits.html?categorie=serrures" style="text-decoration: none; color: inherit;">
+                    <div class="product-card">
+                        <img src="images/serrure_3ponts.jpg" alt="Serrure" style="width: 100%; height: 180px; object-fit: cover; border-radius: 10px; margin-bottom: 15px;">
+                        <h3>Serrures & Sécurité</h3>
+                        <p>Serrures haute sécurité, cylindres, poignées.</p>
+                    </div>
+                </a>
+                <a href="produits.html?categorie=silicone" style="text-decoration: none; color: inherit;">
+                    <div class="product-card">
+                        <img src="images/colleCarrelage.jpg" alt="silicone" style="width: 100%; height: 180px; object-fit: cover; border-radius: 10px; margin-bottom: 15px;">
+                        <h3>Colles & Silicone</h3>
+                        <p>Mastics, colles à carrelage, silicone professionnel.</p>
+                    </div>
+                </a>
+                <a href="produits.html?categorie=electrique" style="text-decoration: none; color: inherit;">
+                    <div class="product-card">
+                        <img src="images/equipementElectrique.jpg" alt="Equipement Electrique" style="width: 100%; height: 180px; object-fit: cover; border-radius: 10px; margin-bottom: 15px;">
+                        <h3>Équipements électriques</h3>
+                        <p>Câbles, disjoncteurs, interrupteurs, prises, luminaires.</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="why-us">
+        <div class="container">
+            <h2>Pourquoi choisir QUINDAV ?</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>Qualité garantie</h3>
+                    <p>Des produits de première qualité, sélectionnés rigoureusement.</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-truck"></i>
+                    <h3>Livraison rapide</h3>
+                    <p>Service de livraison dans tout Lubumbashi.</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-hand-holding-usd"></i>
+                    <h3>Prix compétitifs</h3>
+                    <p>Les meilleurs prix du marché à Lubumbashi.</p>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-headset"></i>
+                    <h3>Conseils professionnels</h3>
+                    <p>Une équipe à votre écoute pour vous guider.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <div class="container">
+            <h2>Besoin d'une réservation ?</h2>
+            <p>Sélectionnez vos produits et faites une réservation en ligne.</p>
+            <a href="produits.html" class="btn btn-primary">Commencer</a>
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+    <script>
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            });
+    </script>
+
+    <script src="script.js"></script>
+</body>
+</html>

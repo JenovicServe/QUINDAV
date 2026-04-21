@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUINDAV - Détail produit</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .produits-categorie-page { padding: 60px 0; }
+        .categorie-header { text-align: center; margin-bottom: 40px; }
+        .categorie-header h1 { color: #1a5f7a; font-size: 36px; margin-bottom: 10px; }
+        .produits-grid-detail { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .produit-modele { background: white; border-radius: 15px; padding: 20px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: transform 0.3s; }
+        .produit-modele:hover { transform: translateY(-5px); }
+        .produit-modele img { width: 100%; height: 200px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
+        .produit-modele h3 { color: #1a5f7a; margin-bottom: 10px; }
+        .produit-modele p { color: #666; font-size: 14px; margin-bottom: 10px; }
+        .produit-prix { font-weight: bold; color: #2e8b57; margin: 10px 0; }
+        .btn-ajouter-liste { background: #1a5f7a; color: white; border: none; padding: 10px 20px; border-radius: 25px; cursor: pointer; margin-top: 10px; width: 100%; }
+        .btn-ajouter-liste:hover { background: #2e8b57; }
+        .quantite-input { width: 60px; padding: 8px; margin-right: 10px; border: 1px solid #ddd; border-radius: 5px; text-align: center; }
+        .retour { display: inline-block; margin-bottom: 20px; color: #1a5f7a; text-decoration: none; }
+        .retour:hover { text-decoration: underline; }
+        .badge-liste {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            background: #1a5f7a;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            z-index: 1000;
+        }
+        .badge-liste span { background: #2e8b57; border-radius: 50%; padding: 2px 8px; margin-left: 8px; }
+    </style>
+</head>
+<body>
+
+    <a href="https://wa.me/243974663487" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <a href="ma-liste.html" class="badge-liste">
+        📋 Ma liste <span id="liste-compteur">0</span>
+    </a>
+
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>QUINDAV</h1>
+                <p>Votre partenaire de confiance à Lubumbashi</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="produits.html">Produits</a></li>
+                    <li><a href="devis.html">Devis</a></li>
+                    <li><a href="a-propos.html">À propos</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <div class="produits-categorie-page">
+        <div class="container">
+            <a href="produits.html" class="retour">← Retour aux catégories</a>
+            <div id="contenu-categorie"></div>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+    <script>
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            });
+    </script>
+
+    <script>
+        // ========== BASE DE DONNÉES COMPLÈTE DE TOUS LES PRODUITS ==========
+        // VOUS POUVEZ AJOUTER, MODIFIER OU SUPPRIMER DES PRODUITS ICI
+        const produitsData = {
+            // VITRES & CARREAUX
+            "vitres-trempees": {
+                nom: "Vitres trempées",
+                produits: [
+                    { id: "vt-4mm", nom: "Vitre trempée 4mm", description: "Verre trempé 4mm d'épaisseur", prix: "25$/m²", image: "images/vitre.jpg" },
+                    { id: "vt-6mm", nom: "Vitre trempée 6mm", description: "Verre trempé 6mm d'épaisseur", prix: "35$/m²", image: "images/vitre_fenetre2.jpg" },
+                    { id: "vt-8mm", nom: "Vitre trempée 8mm", description: "Verre trempé 8mm d'épaisseur", prix: "45$/m²", image: "images/vitre.jpg" },
+                    { id: "vt-10mm", nom: "Vitre trempée 10mm", description: "Verre trempé 10mm d'épaisseur", prix: "60$/m²", image: "images/vitre_fenetre2.jpg" }
+                ]
+            },
+            "carreaux-ceramique": {
+                nom: "Carreaux de céramique",
+                produits: [
+                    { id: "cc-30x30-beige", nom: "Céramique 30x30 beige", description: "Carreau beige mat pour sol", prix: "15$/m²", image: "images/logo_carreaux.jpg" },
+                    { id: "cc-30x60-gris", nom: "Céramique 30x60 gris", description: "Carreau gris brillant pour mur", prix: "18$/m²", image: "images/carreau_mural.jpg" },
+                    { id: "cc-faience-blanche", nom: "Faïence blanche", description: "Faïence murale 20x30", prix: "12$/m²", image: "images/logo_carreau.jpg" },
+                    { id: "cc-45x45-anthracite", nom: "Céramique 45x45 anthracite", description: "Carreau anthracite pour sol moderne", prix: "22$/m²", image: "images/carreau2.jpg" }
+                ]
+            },
+            "vitre-sur-mesure": {
+                nom: "Vitre sur mesure",
+                produits: [
+                    { id: "vm-clair", nom: "Vitre claire sur mesure", description: "Verre float clair, découpe précise", prix: "30$/m²", image: "images/vitre_fenetre2.jpg" },
+                    { id: "vm-fume", nom: "Vitre fumée sur mesure", description: "Verre fumé, aspect moderne", prix: "35$/m²", image: "images/vitre_fenetre.jpg" },
+                    { id: "vm-miroir", nom: "Miroir sur mesure", description: "Miroir argenté, qualité supérieure", prix: "45$/m²", image: "images/vitre_fenetre2.jpg" }
+                ]
+            },
+
+            // SERRURES
+            "serrures-3points": {
+                nom: "Serrures 3 points",
+                produits: [
+                    { id: "s3p-inox", nom: "Serrure 3 points inox", description: "Finition inox brossé, haute sécurité", prix: "55$", image: "images/serrure_3ponts.jpg" },
+                    { id: "s3p-noir", nom: "Serrure 3 points noir mat", description: "Finition noir mat, design moderne", prix: "60$", image: "images/serrure_3ponts.jpg" },
+                    { id: "s3p-doree", nom: "Serrure 3 points dorée", description: "Finition dorée, aspect luxe", prix: "70$", image: "images/serrure_3ponts.jpg" }
+                ]
+            },
+            "poignees-porte": {
+                nom: "Poignées de porte",
+                produits: [
+                    { id: "pp-inox", nom: "Poignée inox brossé", description: "Design moderne, résiste aux traces", prix: "15$", image: "images/serrure.jpg" },
+                    { id: "pp-noir", nom: "Poignée noir mat", description: "Style contemporain", prix: "18$", image: "images/serrure.jpg" },
+                    { id: "pp-doree", nom: "Poignée dorée", description: "Finition dorée brillante", prix: "22$", image: "images/serrure.jpg" },
+                    { id: "pp-bronze", nom: "Poignée bronze", description: "Style classique et élégant", prix: "20$", image: "images/serrure.jpg" }
+                ]
+            },
+            "cylindres-securite": {
+                nom: "Cylindres haute sécurité",
+                produits: [
+                    { id: "cyl-euro", nom: "Cylindre européen", description: "Standard européen, anti-crochetage", prix: "25$", image: "images/cylindre_haute_securité.jpg" },
+                    { id: "cyl-dimple", nom: "Cylindre à goupilles", description: "Haute sécurité, clé brevetée", prix: "35$", image: "images/cylindre_haute_securité.jpg" },
+                    { id: "cyl-anti-percage", nom: "Cylindre anti-perçage", description: "Renforcé contre le perçage", prix: "40$", image: "images/cylindre_haute_securité.jpg" }
+                ]
+            },
+
+            // COLLES & SILICONE
+            "colle-carrelage": {
+                nom: "Colle à carrelage",
+                produits: [
+                    { id: "col-25kg", nom: "Colle classique 25kg", description: "Pour carrelage standard", prix: "15$", image: "images/colleCarrelage.jpg" },
+                    { id: "col-premium-25kg", nom: "Colle premium 25kg", description: "Haute adhérence, pour grands formats", prix: "22$", image: "images/colleCarrelage.jpg" },
+                    { id: "col-flex-25kg", nom: "Colle flexible 25kg", description: "Pour sol chauffant et extérieur", prix: "28$", image: "images/colleCarrelage.jpg" }
+                ]
+            },
+            "silicone-sanitaire": {
+                nom: "Silicone sanitaire",
+                produits: [
+                    { id: "sil-blanc", nom: "Silicone blanc 300ml", description: "Anti-moisissure, pour sdb et cuisine", prix: "6$", image: "images/silicone_sanitaires.jpg" },
+                    { id: "sil-transp", nom: "Silicone transparent 300ml", description: "Invisible, pour joints discrets", prix: "6$", image: "images/silicone_sanitaires.jpg" },
+                    { id: "sil-gris", nom: "Silicone gris 300ml", description: "Pour joints de carrelage gris", prix: "6$", image: "images/silicone_sanitaires.jpg" },
+                    { id: "sil-noir", nom: "Silicone noir 300ml", description: "Design moderne", prix: "7$", image: "images/silicone_sanitaires.jpg" }
+                ]
+            },
+            "mastic-polyurethane": {
+                nom: "Mastic polyuréthane",
+                produits: [
+                    { id: "mast-blanc", nom: "Mastic blanc 600ml", description: "Pour joints de dilatation", prix: "12$", image: "images/mastic_polyrethane.jpg" },
+                    { id: "mast-gris", nom: "Mastic gris 600ml", description: "Résiste aux UV et intempéries", prix: "12$", image: "images/mastic_polyrethane.jpg" },
+                    { id: "mast-noir", nom: "Mastic noir 600ml", description: "Pour toitures et étanchéité", prix: "13$", image: "images/mastic_polyrethane.jpg" }
+                ]
+            },
+
+            // ÉQUIPEMENTS ÉLECTRIQUES
+            "cables-electriques": {
+                nom: "Câbles électriques",
+                produits: [
+                    { id: "cb-15", nom: "Câble 1.5mm²", description: "Pour éclairage, 100m", prix: "25$/100m", image: "images/cable.jpg" },
+                    { id: "cb-25", nom: "Câble 2.5mm²", description: "Pour prises, 100m", prix: "35$/100m", image: "images/cable.jpg" },
+                    { id: "cb-4", nom: "Câble 4mm²", description: "Pour climatiseur, 100m", prix: "45$/100m", image: "images/cable.jpg" },
+                    { id: "cb-6", nom: "Câble 6mm²", description: "Pour four/plaque, 100m", prix: "55$/100m", image: "images/cable.jpg" },
+                    { id: "cb-10", nom: "Câble 10mm²", description: "Pour arrivée générale", prix: "80$/100m", image: "images/cable.jpg" }
+                ]
+            },
+            "disjoncteurs": {
+                nom: "Disjoncteurs",
+                produits: [
+                    { id: "dj-10a", nom: "Disjoncteur 10A", description: "Protection éclairage", prix: "8$", image: "images/disjoncteur_electrique.jpg" },
+                    { id: "dj-16a", nom: "Disjoncteur 16A", description: "Protection prises", prix: "8$", image: "images/disjoncteur_electrique.jpg" },
+                    { id: "dj-20a", nom: "Disjoncteur 20A", description: "Pour circuits spécialisés", prix: "9$", image: "images/disjoncteur_electrique.jpg" },
+                    { id: "dj-32a", nom: "Disjoncteur 32A", description: "Pour four ou plaque", prix: "10$", image: "images/disjoncteur_electrique.jpg" },
+                    { id: "dj-40a", nom: "Disjoncteur 40A", description: "Pour arrivée secondaire", prix: "12$", image: "images/disjoncteur_electrique.jpg" }
+                ]
+            },
+            "luminaires-led": {
+                nom: "Luminaires LED",
+                produits: [
+                    { id: "lum-plafond-20w", nom: "Plafonnier LED 20W", description: "Équivalent 150W, blanc chaud", prix: "25$", image: "images/lampe_electrique.jpg" },
+                    { id: "lum-plafond-30w", nom: "Plafonnier LED 30W", description: "Équivalent 200W", prix: "32$", image: "images/lampe_electrique.jpg" },
+                    { id: "lum-spot-encast", nom: "Spot LED encastrable", description: "Diamètre 7cm, blanc froid", prix: "12$", image: "images/lampe_electrique.jpg" },
+                    { id: "lum-jardin", nom: "Projecteur LED jardin", description: "Étanche, 20W", prix: "35$", image: "images/lampe_electrique.jpg" },
+                    { id: "lum-suspendu", nom: "Suspension LED", description: "Design moderne, dimmable", prix: "45$", image: "images/lampe_electrique.jpg" }
+                ]
+            },
+            "prises-interrupteurs": {
+                nom: "Prises et interrupteurs",
+                produits: [
+                    { id: "pri-legrand-blanc", nom: "Prise Legrand blanche", description: "Avec terre, 16A", prix: "5$", image: "images/interrupteur.jpg" },
+                    { id: "pri-legrand-noir", nom: "Prise Legrand noire", description: "Design noir mat", prix: "6$", image: "images/interrupteur.jpg" },
+                    { id: "int-simple", nom: "Interrupteur simple", description: "Va-et-vient, blanc", prix: "4$", image: "images/interrupteur.jpg" },
+                    { id: "int-double", nom: "Interrupteur double", description: "2 commandes", prix: "6$", image: "images/interrupteur.jpg" },
+                    { id: "pri-usb", nom: "Prise USB", description: "2 ports USB + prise classique", prix: "12$", image: "images/interrupteur.jpg" }
+                ]
+            }
+        };
+
+        // Récupérer la catégorie depuis l'URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const categorieId = urlParams.get('id');
+        
+        if (categorieId && produitsData[categorieId]) {
+            const categorie = produitsData[categorieId];
+            const container = document.getElementById('contenu-categorie');
+            
+            let produitsHtml = `
+                <div class="categorie-header">
+                    <h1>${categorie.nom}</h1>
+                    <p>Choisissez le modèle qui vous intéresse</p>
+                </div>
+                <div class="produits-grid-detail">
+            `;
+            
+            categorie.produits.forEach(produit => {
+                produitsHtml += `
+                    <div class="produit-modele">
+                        <img src="${produit.image}" alt="${produit.nom}">
+                        <h3>${produit.nom}</h3>
+                        <p>${produit.description}</p>
+                        <div class="produit-prix">${produit.prix}</div>
+                        <div>
+                            <input type="number" id="qty-${produit.id}" class="quantite-input" value="1" min="1">
+                            <button class="btn-ajouter-liste" onclick="ajouterAListe('${produit.nom}', 'qty-${produit.id}')">📋 Ajouter à ma liste</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            produitsHtml += `</div>`;
+            container.innerHTML = produitsHtml;
+        } else {
+            document.getElementById('contenu-categorie').innerHTML = '<p style="text-align:center;">Catégorie non trouvée. <a href="produits.html">Retour aux produits</a></p>';
+        }
+
+        // Gestion de la liste
+        let listeDevis = JSON.parse(localStorage.getItem('listeDevis')) || [];
+
+        function ajouterAListe(nomProduit, inputId) {
+            const quantiteInput = document.getElementById(inputId);
+            const quantite = parseInt(quantiteInput.value) || 1;
+            
+            const existant = listeDevis.find(item => item.nom === nomProduit);
+            if (existant) {
+                existant.quantite += quantite;
+            } else {
+                listeDevis.push({ nom: nomProduit, quantite: quantite });
+            }
+            
+            localStorage.setItem('listeDevis', JSON.stringify(listeDevis));
+            mettreAJourCompteur();
+            
+            const btn = event.target;
+            const originalText = btn.innerText;
+            btn.innerText = '✓ Ajouté !';
+            btn.style.background = '#2e8b57';
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.style.background = '#1a5f7a';
+            }, 1500);
+        }
+
+        function mettreAJourCompteur() {
+            const totalItems = listeDevis.reduce((sum, item) => sum + item.quantite, 0);
+            const compteur = document.getElementById('liste-compteur');
+            if (compteur) compteur.innerText = totalItems;
+        }
+
+        mettreAJourCompteur();
+    </script>
+
+    <script src="script.js"></script>
+</body>
+</html>

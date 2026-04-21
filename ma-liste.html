@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUINDAV - Ma liste de produits</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .liste-page { padding: 60px 0; }
+        .liste-container { background: white; border-radius: 20px; padding: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        .liste-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #eee; flex-wrap: wrap; gap: 10px; }
+        .liste-item-info { flex: 2; }
+        .liste-item-info h4 { margin: 0; color: #1a5f7a; }
+        .liste-item-prix { font-weight: bold; color: #2e8b57; min-width: 80px; }
+        .liste-item-quantite { width: 70px; padding: 8px; text-align: center; border: 1px solid #ddd; border-radius: 5px; }
+        .btn-supprimer { background: #dc3545; color: white; border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer; }
+        .liste-total { text-align: right; padding: 20px; font-size: 24px; font-weight: bold; border-top: 2px solid #eee; margin-top: 20px; background: #e8f5e9; border-radius: 10px; }
+        .btn-reserver { background: #2e8b57; color: white; border: none; padding: 15px 30px; border-radius: 30px; font-size: 18px; cursor: pointer; width: 100%; margin-top: 20px; }
+        .btn-reserver:hover { background: #1a5f7a; }
+        .liste-vide { text-align: center; padding: 50px; }
+        .btn-vider { background: #6c757d; color: white; border: none; padding: 10px 20px; border-radius: 25px; cursor: pointer; margin-top: 20px; }
+        .btn-retour { background: #1a5f7a; color: white; border: none; padding: 10px 20px; border-radius: 25px; cursor: pointer; text-decoration: none; display: inline-block; }
+        @media (max-width: 768px) { .liste-item { flex-direction: column; text-align: center; } }
+    </style>
+</head>
+<body>
+
+    <a href="https://wa.me/243974663487" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>QUINDAV</h1>
+                <p>Votre partenaire de confiance à Lubumbashi</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="produits.html">Produits</a></li>
+                    <li><a href="reservation.html">Réservation</a></li>
+                    <li><a href="a-propos.html">À propos</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <div class="liste-page">
+        <div class="container">
+            <div class="liste-container">
+                <h1>📋 Ma sélection</h1>
+                <div id="liste-contenu"></div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <a href="produits.html" class="btn-retour">← Ajouter d'autres produits</a>
+                    <button class="btn-vider" onclick="viderListe()">🗑️ Vider ma liste</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+    <script>
+        fetch('footer.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('footer-placeholder').innerHTML = data;
+            });
+    </script>
+
+    <script>
+        const prixProduits = {
+            "Vitre trempée 4mm": 25, "Vitre trempée 6mm": 35, "Vitre trempée 8mm": 45, "Vitre trempée 10mm": 60,
+            "Céramique 30x30 beige": 15, "Céramique 30x60 gris": 18, "Faïence blanche": 12, "Céramique 45x45 anthracite": 22,
+            "Vitre claire sur mesure": 30, "Vitre fumée sur mesure": 35, "Miroir sur mesure": 45,
+            "Serrure 3 points inox": 55, "Serrure 3 points noir mat": 60, "Serrure 3 points dorée": 70,
+            "Poignée inox brossé": 15, "Poignée noir mat": 18, "Poignée dorée": 22, "Poignée bronze": 20,
+            "Cylindre européen": 25, "Cylindre à goupilles": 35, "Cylindre anti-perçage": 40,
+            "Colle classique 25kg": 15, "Colle premium 25kg": 22, "Colle flexible 25kg": 28,
+            "Silicone blanc 300ml": 6, "Silicone transparent 300ml": 6, "Silicone gris 300ml": 6, "Silicone noir 300ml": 7,
+            "Mastic blanc 600ml": 12, "Mastic gris 600ml": 12, "Mastic noir 600ml": 13,
+            "Câble 1.5mm²": 25, "Câble 2.5mm²": 35, "Câble 4mm²": 45, "Câble 6mm²": 55, "Câble 10mm²": 80,
+            "Disjoncteur 10A": 8, "Disjoncteur 16A": 8, "Disjoncteur 20A": 9, "Disjoncteur 32A": 10, "Disjoncteur 40A": 12,
+            "Plafonnier LED 20W": 25, "Plafonnier LED 30W": 32, "Spot LED encastrable": 12, "Projecteur LED jardin": 35, "Suspension LED": 45,
+            "Prise Legrand blanche": 5, "Prise Legrand noire": 6, "Interrupteur simple": 4, "Interrupteur double": 6, "Prise USB": 12
+        };
+
+        let listeDevis = JSON.parse(localStorage.getItem('listeDevis')) || [];
+
+        function afficherListe() {
+            const container = document.getElementById('liste-contenu');
+            
+            if (listeDevis.length === 0) {
+                container.innerHTML = '<div class="liste-vide">📭 Votre liste est vide.<br><br><a href="produits.html" class="btn-retour">Découvrir nos produits</a></div>';
+                return;
+            }
+            
+            let html = '';
+            let totalGeneral = 0;
+            
+            listeDevis.forEach((item, index) => {
+                const prixUnitaire = prixProduits[item.nom] || 0;
+                const sousTotal = prixUnitaire * item.quantite;
+                totalGeneral += sousTotal;
+                
+                html += `
+                    <div class="liste-item">
+                        <div class="liste-item-info">
+                            <h4>${item.nom}</h4>
+                        </div>
+                        <div class="liste-item-prix">${prixUnitaire}$ / unité</div>
+                        <div>
+                            <input type="number" class="liste-item-quantite" value="${item.quantite}" min="1" onchange="modifierQuantite(${index}, this.value)">
+                        </div>
+                        <div class="liste-item-prix">${sousTotal}$</div>
+                        <div>
+                            <button class="btn-supprimer" onclick="supprimerDeLaListe(${index})">Supprimer</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += `
+                <div class="liste-total">
+                    💰 TOTAL : ${totalGeneral} USD
+                </div>
+                <button class="btn-reserver" onclick="reserverMaintenant()">📦 Réserver maintenant</button>
+            `;
+            
+            container.innerHTML = html;
+        }
+        
+        function modifierQuantite(index, nouvelleQuantite) {
+            listeDevis[index].quantite = parseInt(nouvelleQuantite);
+            localStorage.setItem('listeDevis', JSON.stringify(listeDevis));
+            afficherListe();
+            mettreAJourCompteurParent();
+        }
+        
+        function supprimerDeLaListe(index) {
+            listeDevis.splice(index, 1);
+            localStorage.setItem('listeDevis', JSON.stringify(listeDevis));
+            afficherListe();
+            mettreAJourCompteurParent();
+        }
+        
+        function viderListe() {
+            if (confirm('Voulez-vous vraiment vider votre liste ?')) {
+                listeDevis = [];
+                localStorage.setItem('listeDevis', JSON.stringify(listeDevis));
+                afficherListe();
+                mettreAJourCompteurParent();
+            }
+        }
+        
+        function mettreAJourCompteurParent() {
+            const totalItems = listeDevis.reduce((sum, item) => sum + item.quantite, 0);
+            const compteur = document.getElementById('liste-compteur');
+            if (compteur) compteur.innerText = totalItems;
+        }
+        
+        function reserverMaintenant() {
+            if (listeDevis.length === 0) {
+                alert('Votre liste est vide. Ajoutez des produits d\'abord.');
+                return;
+            }
+            
+            let totalGeneral = 0;
+            let detailsProduits = "";
+            listeDevis.forEach(item => {
+                const prixUnitaire = prixProduits[item.nom] || 0;
+                const sousTotal = prixUnitaire * item.quantite;
+                totalGeneral += sousTotal;
+                detailsProduits += `${item.nom} : ${item.quantite} x ${prixUnitaire}$ = ${sousTotal}$\n`;
+            });
+            
+            const message = `📦 MA COMMANDE\n\n${detailsProduits}\n💰 TOTAL : ${totalGeneral} USD\n\n⏳ En attente de confirmation.`;
+            const messageEncoded = encodeURIComponent(message);
+            window.location.href = `reservation.html?message=${messageEncoded}&total=${totalGeneral}`;
+        }
+        
+        afficherListe();
+    </script>
+
+    <script src="script.js"></script>
+</body>
+</html>
